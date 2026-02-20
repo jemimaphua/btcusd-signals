@@ -40,6 +40,8 @@ def pull_funding_rate(symbol = "BTCUSDT"):
     response = requests.get(url)
     data = json.loads(response.text)
     # print(data)
+    if not data:  # Handle empty response
+        return pd.DataFrame(columns=["fundingTime", "fundingRate", "symbol"])
     df = pd.DataFrame(data)
     df["fundingTime"] = pd.to_datetime(df["fundingTime"], unit="ms")
     return df
@@ -50,6 +52,8 @@ def get_open_interest(symbol = "BTCUSDT", period = "1d"):
     response.raise_for_status()
     data = response.json()
     # print(data)
+    if not data:  # Handle empty response
+        return pd.DataFrame(columns=["symbol", "sumOpenInterest", "sumOpenInterestValue", "timestamp"])
     df = pd.DataFrame(data)
     df["timestamp"]  = pd.to_datetime(df["timestamp"], unit="ms")
     return df
@@ -60,6 +64,8 @@ def get_long_short_ratio(symbol = "BTCUSDT", period = "1d"):
     response.raise_for_status()
     data = response.json()
     # print(data)
+    if not data:  # Handle empty response
+        return pd.DataFrame(columns=["symbol", "longShortRatio", "longAccount", "shortAccount", "timestamp"])
     df = pd.DataFrame(data)
     df["timestamp"]  = pd.to_datetime(df["timestamp"], unit="ms")
     return df
