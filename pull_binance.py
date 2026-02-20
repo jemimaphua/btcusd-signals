@@ -2,6 +2,12 @@ import requests
 import pandas as pd
 import json
 
+def test_endpoints():
+    random_endpoint = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d"
+    r = requests.get(random_endpoint)
+    print(r.status_code)
+    print(r.text[:200])
+
 def pull_price(symbol, interval):
     url = f"https://api.binance.com/api/v3/klines?symbol={symbol}&interval={interval}"
     response = requests.get(url)
@@ -68,6 +74,8 @@ def build_price_df(symbol, interval):
     df = calculate_ma(df)
     df = calculate_bollinger_bands(df)
     return df
+
+test_endpoints()
 
 # get DFs
 price_df = build_price_df("BTCUSDT", "1d")
